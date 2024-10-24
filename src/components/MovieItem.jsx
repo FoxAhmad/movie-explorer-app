@@ -1,6 +1,6 @@
 import React from 'react';
 import { useFavorites } from '../context/FavoritesContext';
-
+import { Link } from 'react-router-dom';
 const MovieItem = ({ movie }) => {
   const { favorites, toggleFavorite } = useFavorites();
   const isFavorite = favorites.some((fav) => fav.imdbID === movie.imdbID);
@@ -15,6 +15,10 @@ const MovieItem = ({ movie }) => {
         </button>
       </div>
       <p className="dark:text-gray-300">{movie.Year}</p>
+     
+      <Link to={`/movie/${movie.imdbID}`} className="text-blue-500 hover:underline">
+        View Details
+      </Link>
     </div>
   );
 };

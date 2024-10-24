@@ -36,8 +36,8 @@ const MovieDetails = () => {
 
   return (
     movie && (
-      <div className="container mx-auto p-4">
-        <h1 className="text-3xl font-bold mb-4">{movie.Title}</h1>
+      <div className="container mx-auto p-4 dark:bg-gray-400 ">
+        <h1 className="text-3xl font-bold mb-4 ">{movie.Title}</h1>
         <p><strong>Year:</strong> {movie.Year}</p>
         <p><strong>Genre:</strong> {movie.Genre}</p>
         <p><strong>Director:</strong> {movie.Director}</p>

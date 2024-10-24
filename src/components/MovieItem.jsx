@@ -15,10 +15,12 @@ const MovieItem = ({ movie }) => {
         </button>
       </div>
       <p className="dark:text-gray-300">{movie.Year}</p>
-     
+         
       <Link to={`/movie/${movie.imdbID}`} className="text-blue-500 hover:underline">
         View Details
       </Link>
+      
+
     </div>
   );
 };

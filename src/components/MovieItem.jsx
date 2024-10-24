@@ -1,15 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useFavorites } from '../context/FavoritesContext';
 
 const MovieItem = ({ movie }) => {
+  const { favorites, toggleFavorite } = useFavorites();
+  const isFavorite = favorites.some((fav) => fav.imdbID === movie.imdbID);
+
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
-      <img src={movie.Poster} alt={movie.Title} className="w-full h-64 object-cover rounded-lg mb-4" />
-      <h3 className="text-lg font-bold">{movie.Title}</h3>
-      <p className="text-gray-500">{movie.Year}</p>
-      <Link to={`/movie/${movie.imdbID}`} className="mt-2 text-blue-500">
-        View Details
-      </Link>
+    <div className="border p-4 rounded-lg shadow-md bg-white dark:bg-gray-800">
+      <img src={movie.Poster} alt={`${movie.Title} Poster`} className="w-full h-60 object-cover rounded" />
+      <div className="flex justify-between items-center mt-2">
+        <h2 className="text-lg font-bold dark:text-white">{movie.Title}</h2>
+        <button onClick={() => toggleFavorite(movie)}>
+          {isFavorite ? '❤️' : '🤍'}
+        </button>
+      </div>
+      <p className="dark:text-gray-300">{movie.Year}</p>
     </div>
   );
 };

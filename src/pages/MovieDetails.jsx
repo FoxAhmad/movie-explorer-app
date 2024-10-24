@@ -1,44 +1,50 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useFavorites } from '../context/FavoritesContext';
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
-const MovieDetails = ({ movies }) => {
-  const { id } = useParams(); // Extract the movie ID from the URL
-  const movie = movies.find((m) => m.imdbID === id); // Find the movie by ID
-  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
-  const navigate = useNavigate();
+const MovieDetails = () => {
+  const { id } = useParams(); // Get the movie ID from the URL params
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!movie) {
-    return <p>Movie not found.</p>;
-  }
+  useEffect(() => {
+    const fetchMovieDetails = async () => {
+      setLoading(true);
+      setError(null);
 
-  const isFavorite = favorites.some((fav) => fav.imdbID === movie.imdbID);
+      try {
+        const response = await axios.get(`https://www.omdbapi.com/?apikey=8d93900b&i=${id}`);
+        if (response.data.Response === 'True') {
+          setMovie(response.data);
+        } else {
+          setError('Movie not found.');
+        }
+      } catch (error) {
+        console.error('Error fetching movie details:', error);
+        setError('Failed to fetch movie details.');
+      }
 
-  const handleFavoriteClick = () => {
-    if (isFavorite) {
-      removeFromFavorites(movie.imdbID);
-    } else {
-      addToFavorites(movie);
-    }
-  };
+      setLoading(false);
+    };
+
+    fetchMovieDetails();
+  }, [id]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="container mx-auto p-4">
-      <button onClick={() => navigate(-1)} className="mb-4 bg-gray-200 px-4 py-2 rounded">
-        Go Back
-      </button>
-      <div className="bg-white shadow-lg p-6 rounded-lg">
-        <img src={movie.Poster} alt={movie.Title} className="w-full h-96 object-cover mb-4" />
-        <h2 className="text-2xl font-bold">{movie.Title}</h2>
-        <p>Year: {movie.Year}</p>
-        <button
-          onClick={handleFavoriteClick}
-          className={`mt-4 px-4 py-2 rounded-lg ${isFavorite ? 'bg-red-500' : 'bg-blue-500'} text-white`}
-        >
-          {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-        </button>
+    movie && (
+      <div className="container mx-auto p-4">
+        <h1 className="text-3xl font-bold mb-4">{movie.Title}</h1>
+        <p><strong>Year:</strong> {movie.Year}</p>
+        <p><strong>Genre:</strong> {movie.Genre}</p>
+        <p><strong>Director:</strong> {movie.Director}</p>
+        <p><strong>Plot:</strong> {movie.Plot}</p>
+        <img src={movie.Poster} alt={`${movie.Title} Poster`} className="mt-4" />
       </div>
-    </div>
+    )
   );
 };
 

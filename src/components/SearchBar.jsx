@@ -5,19 +5,22 @@ const SearchBar = ({ onSearch }) => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    onSearch(query);
+    onSearch(query); // Call the fetchMovies function with the search query
   };
 
   return (
-    <form onSubmit={handleSearch} className="flex items-center justify-center mb-8">
+    <form onSubmit={handleSearch} className="mb-4">
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for a movie..."
-        className="w-full max-w-md p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Search movies..."
+        className="border border-gray-300 rounded-lg px-4 py-2 w-full"
       />
-      <button type="submit" className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md">
+      <button
+        type="submit"
+        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg"
+      >
         Search
       </button>
     </form>

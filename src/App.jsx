@@ -5,20 +5,25 @@ import Favorites from './pages/Favorites';
 import { FavoritesProvider } from './context/FavoritesContext';
 import Navbar from './components/Navbar';
 import { ThemeProvider } from './context/ThemeContext';
+import Footer from './components/Footer';
 
 function App() {
   return (
     <ThemeProvider>
       
     <FavoritesProvider>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/movie/:id" element={<MovieDetails />} />
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/moviedetails" element={<MovieDetails />} />
-        </Routes>
+    <Router>
+        <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900">
+          <Navbar />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/favorites" element={<Favorites />} />
+              <Route path="/movie/:id" element={<MovieDetails />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </Router>
     </FavoritesProvider>
     </ThemeProvider>
